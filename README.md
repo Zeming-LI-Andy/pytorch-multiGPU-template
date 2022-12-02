@@ -36,4 +36,12 @@ If users need to do pre-training mission, they could firstly trained their model
 * Rewriting the result ouputing part.
 
 ## 6. main_finetune.py
-
+If users need to do finetuning mission, the could run this .py file.
+* Defining the hyper-parameters which users will use in `get_args_parser` function.
+* Rewriting the dataset loading part.
+* Defining the model hyper-parameters and creating model.
+* Rewriting the pretrained model loading part. In this part, users need to be aware of three parts: 1. The final layer of the pretrained model whether need to be depected; 2. Checking the finetuning parts whether they is missing. 3. Initilizing the final layer's parameter.
+* User could choose whether to set the `required_grad` of non-finetuning layer to False. This part I have alread written and commented in the code following the part 3.
+* Setting optimizer. Optimizer AdamW have already been setted.
+* Setting loss function.
+* Rewriting the result ouputing part.

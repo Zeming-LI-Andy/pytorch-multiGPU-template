@@ -187,7 +187,8 @@ def main(args):
         print("Load pre-trained checkpoint from: %s" % args.finetune)
         checkpoint_model = checkpoint['model']
         state_dict = model.state_dict()
-        # abandoning the last layer of the pre-trained model if its shape is not same as the new model
+        # abandoning the last layer of the pre-trained model if its shape is not same as the finetuned model and its name is same as the finetuned model.
+        # `head.weight` and `head.bias` are the parameters' name.
         for k in ['head.weight', 'head.bias']:
             if k in checkpoint_model and checkpoint_model[k].shape != state_dict[k].shape:
                 print(f"Removing key {k} from pretrained checkpoint")
@@ -205,6 +206,7 @@ def main(args):
         """ Initialize the final layer's parameters """
         trunc_normal_(model.head.weight, std=2e-5)
 
+    # TODO
     """
     # for linear prob only
     # hack: revise model's head with BN
