@@ -25,6 +25,8 @@ import models
 from engine_finetune import train_one_epoch, evaluate
 
 
+# TODO
+""" Defining the hyper-parameters """
 def get_args_parser():
     parser = argparse.ArgumentParser('MODEL fine-tuning for image classification', add_help=False)
     parser.add_argument('--batch_size', default=64, type=int,
@@ -34,7 +36,7 @@ def get_args_parser():
                         help='Accumulate gradient iterations (for increasing the effective batch size under memory constraints)')
 
     # Model parameters
-    parser.add_argument('--model', default='vit_large_patch16', type=str, metavar='MODEL',
+    parser.add_argument('--model', default='myModel_versionID', type=str, metavar='MODEL',
                         help='Name of model to train')
 
     parser.add_argument('--input_size', default=224, type=int,
@@ -280,7 +282,7 @@ def main(args):
                 loss_scaler=loss_scaler, epoch=epoch)
 
         # TODO
-        """ Ouput evaluation result """
+        """ Setting the displayed results """
         test_stats = evaluate(data_loader_val, model, device)
         print(f"Accuracy of the network on the {len(dataset_val)} test images: {test_stats['acc1']:.1f}%")
         max_accuracy = max(max_accuracy, test_stats["acc1"])

@@ -3,8 +3,6 @@ import torch.nn as nn
 
 # TODO
 class MyModel(nn.Module):
-    """ Masked Autoencoder with VisionTransformer backbone
-    """
     def __init__(self, **kwargs):
         super(MyModel, self).__init__()
 
@@ -14,7 +12,6 @@ class MyModel(nn.Module):
         # initialization
         # initialize some fixed parameter such as pos embedding
         
-
         # initialize torch Layer such as nn.Linear and nn.LayerNorm
         self.apply(self._init_weights)
 
@@ -43,6 +40,6 @@ class MyModel(nn.Module):
         pass
 
 
-def generate_MyModel(**kwargs):
+def MyModel_versionID(**kwargs):
     print(kwargs)
     return MyModel(**kwargs)
