@@ -45,3 +45,8 @@ If users need to do finetuning mission, the could run this .py file.
 * Setting optimizer. Optimizer AdamW have already been setted.
 * Setting loss function.
 * Rewriting the result ouputing part.
+
+## 7. Running Programe
+* Using multiGPU: 
+CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch --nproc_per_node=2 main_pretrain.py
+* Using one GPU: CUDA_VISIBLE_DEVICES=0 python main_pretrain.py
