@@ -5,7 +5,17 @@ import torch.nn as nn
 class MyModel(nn.Module):
     def __init__(self, **kwargs):
         super(MyModel, self).__init__()
+        self.linear1 = torch.nn.Linear(784, 512)
+        self.act1 = torch.nn.ReLU()
 
+        self.linear2 = torch.nn.Linear(512, 256)
+        self.act2 = torch.nn.ReLU()
+
+        self.linear3 = torch.nn.Linear(256, 64)
+        self.act3 = torch.nn.ReLU()
+
+        self.linear4 = torch.nn.Linear(64, 10)
+    
         self.initialize_weights()
 
     def initialize_weights(self):
@@ -27,17 +37,23 @@ class MyModel(nn.Module):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
 
-    def forward_encoder(self):
-        pass
+    def forward(self, input):
+        x, y = input
+        out = torch.flatten(x, start_dim=1)
 
-    def forward_decoder(self):
-        pass
+        out = self.linear1(out)
+        out = self.act1(out)
 
-    def forward_loss(self):
-        pass
+        out = self.linear2(out)
+        out = self.act2(out)
 
-    def forward(self):
-        pass
+        out = self.linear3(out)
+        out = self.act3(out)
+
+        out = self.linear4(out)
+
+        loss = torch.nn.functional.cross_entropy(out, y)
+        return out, loss
 
 
 def MyModel_versionID(**kwargs):

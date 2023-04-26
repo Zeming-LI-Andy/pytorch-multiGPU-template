@@ -38,7 +38,7 @@ def train_one_epoch(model: torch.nn.Module,
         with torch.cuda.amp.autocast():
             # TODO
             """ Model forward processing """
-            loss = model(samples, targets)
+            _, loss = model((samples, targets))
 
         loss_value = loss.item()
 
@@ -91,15 +91,18 @@ def evaluate(data_loader, model, device):
 
         # compute output
         with torch.cuda.amp.autocast():
-            loss = model(samples, targets)
+            pred, loss = model((samples, targets))
+            pred = pred.argmax(dim=1)
 
         batch_size = samples.shape[0]
         metric_logger.update(loss=loss.item())
-        metric_logger.meters['acc'].update(acc1.item(), n=batch_size)
+        true_num = float((pred == targets).sum().item())
+        acc1 = true_num/pred.shape[0]
+        metric_logger.meters['acc1'].update(acc1, n=batch_size)
 
     # gather the stats from all processes
     metric_logger.synchronize_between_processes()
-    print('* Acc@1 {top1.global_avg:.3f} Acc@5 {top5.global_avg:.3f} loss {losses.global_avg:.3f}'
-          .format(top1=metric_logger.acc1, top5=metric_logger.acc5, losses=metric_logger.loss))
+    print('* Acc@1 {top1.global_avg:.3f} loss {losses.global_avg:.3f}'
+          .format(top1=metric_logger.acc1, losses=metric_logger.loss))
 
     return {k: meter.global_avg for k, meter in metric_logger.meters.items()}
